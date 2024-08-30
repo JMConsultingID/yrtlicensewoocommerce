@@ -197,6 +197,12 @@ function display_license_edit_form($edit_id) {
         return;
     }
 
+    // Extract source information from the license data
+    $source = isset($license['source']) ? json_decode($license['source'], true) : array();
+    $ip_user = isset($source['ip_user']) ? $source['ip_user'] : __('N/A', 'yrtlicensewoocommerce');
+    $browser = isset($source['browser']) ? $source['browser'] : __('N/A', 'yrtlicensewoocommerce');
+    $domain = isset($source['domain']) ? $source['domain'] : __('N/A', 'yrtlicensewoocommerce');
+
     // Display the edit form
     ?>
     <div class="wrap">
@@ -235,7 +241,19 @@ function display_license_edit_form($edit_id) {
                         </select>
                     </td>
                 </tr>
-                <!-- Add other fields as necessary -->
+                <!-- Display source information below license status -->
+                <tr>
+                    <th><?php _e('IP Address', 'yrtlicensewoocommerce'); ?></th>
+                    <td><p><?php echo esc_html($ip_user); ?></p></td>
+                </tr>
+                <tr>
+                    <th><?php _e('Browser', 'yrtlicensewoocommerce'); ?></th>
+                    <td><p><?php echo esc_html($browser); ?></p></td>
+                </tr>
+                <tr>
+                    <th><?php _e('Domain', 'yrtlicensewoocommerce'); ?></th>
+                    <td><p><?php echo esc_html($domain); ?></p></td>
+                </tr>
             </table>
             <p class="submit">
                 <input type="submit" name="submit" id="submit" class="button button-primary" value="<?php _e('Update License', 'yrtlicensewoocommerce'); ?>">
