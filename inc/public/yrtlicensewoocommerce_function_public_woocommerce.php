@@ -49,6 +49,14 @@ function license_yrt_account_number_field_after_billing_form($checkout) {
 }
 add_action('woocommerce_after_checkout_billing_form', 'license_yrt_account_number_field_after_billing_form');
 
+// Validate the custom checkout field
+function license_yrt_validate_account_number_field() {
+    if (isset($_POST['yrt_license_account_number']) && empty($_POST['yrt_license_account_number'])) {
+        wc_add_notice(__('Please enter your Account ID.'), 'error');
+    }
+}
+add_action('woocommerce_checkout_process', 'license_yrt_validate_account_number_field');
+
 // Save custom fields to order meta
 function license_yrt_checkout_field_update_order_meta($order_id) {
     if (!is_yrt_license_enabled()) {
