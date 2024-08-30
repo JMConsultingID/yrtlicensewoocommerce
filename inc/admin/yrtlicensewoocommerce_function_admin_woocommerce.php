@@ -44,6 +44,15 @@ function yrt_license_woocommerce_settings($settings) {
     );
 
     $settings[] = array(
+        'title'    => __('YRT Google Script Web APP Url', 'yrtlicensewoocommerce'),
+        'desc'     => __('Enter Google Script Web APP Url', 'yrtlicensewoocommerce'),
+        'id'       => 'yrt_api_google_app_url',
+        'type'     => 'text',
+        'default'  => '',
+        'desc_tip' => __('YRT Google Script Web APP Url (e.g., https://script.google.com/macros/s/AKfycbyoDAN2ClkKlu36xb1KwEsoyfhoP0i3WBzRX2gU3RAksU6sASDF1nEQMzCbZgnA1RryQw/exec)', 'yrtlicensewoocommerce'),
+    );
+
+    $settings[] = array(
         'type' => 'sectionend',
         'id'   => 'yrt_license_settings'
     );
@@ -70,6 +79,11 @@ function yrt_license_save_woocommerce_settings() {
             'type'     => 'text',
             'default'  => '',
         )
+        array(
+            'id'       => 'yrt_api_google_app_url',
+            'type'     => 'text',
+            'default'  => '',
+        ),
     ));
 }
 add_action('woocommerce_update_options_general', 'yrt_license_save_woocommerce_settings');

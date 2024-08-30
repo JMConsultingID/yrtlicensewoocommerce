@@ -13,6 +13,9 @@ function license_yrt_send_data_to_google_sheets($order_id, $old_status, $new_sta
     if (!is_yrt_license_enabled()) {
         return; // Exit if the feature is not enabled
     }
+
+    // Get the Google Script Web APP Url
+    $yrt_api_google_app_url = get_option('yrt_api_google_app_url');
     
     if ($new_status == 'completed') {
         $full_name = $order->get_formatted_billing_full_name();
@@ -44,7 +47,7 @@ function license_yrt_send_data_to_google_sheets($order_id, $old_status, $new_sta
                 'license_key'     => $license_key
             );
 
-            $response = wp_remote_post('YOUR_GOOGLE_SCRIPT_WEB_APP_URL', array(
+            $response = wp_remote_post($yrt_api_google_app_url, array(
                 'method'    => 'POST',
                 'body'      => json_encode($data),
                 'headers'   => array(
