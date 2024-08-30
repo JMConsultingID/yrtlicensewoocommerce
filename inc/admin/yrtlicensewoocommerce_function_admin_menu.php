@@ -80,6 +80,7 @@ function yrt_license_manage_license_page() {
             <input type="hidden" name="page" value="yrt-license">
             <input type="text" name="s" value="<?php echo esc_attr($search_query); ?>" placeholder="<?php _e('Search licenses...', 'yrtlicensewoocommerce'); ?>">
             <input type="submit" class="button" value="<?php _e('Search', 'yrtlicensewoocommerce'); ?>">
+            <a href="<?php echo esc_url(admin_url('admin.php?page=yrt-license')); ?>" class="button"><?php _e('Clear Search', 'yrtlicensewoocommerce'); ?></a>
         </form>
 
         <table class="wp-list-table widefat fixed striped">
