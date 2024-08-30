@@ -14,19 +14,15 @@ function license_yrt_send_data_to_google_sheets($order_id, $old_status, $new_sta
         return; // Exit if the feature is not enabled
     }
 
-    // Get the Google Script Web APP Url
-    $yrt_api_google_app_url = get_option('yrt_api_google_app_url');
-    
     if ($new_status == 'completed') {
         $full_name = $order->get_formatted_billing_full_name();
         $email_billing = $order->get_billing_email();
-        
-        // Check if the order has items before attempting to access them
         $items = $order->get_items();
+        
         if (!empty($items)) {
             $product_id = reset($items)->get_product_id(); // Safely get the first product ID
         } else {
-            $product_id = ''; // Or handle accordingly if no items
+            $product_id = ''; // Handle if no items
         }
 
         $account_number = get_post_meta($order_id, '_yrt_license_account_number', true);
@@ -49,9 +45,9 @@ function license_yrt_send_data_to_google_sheets($order_id, $old_status, $new_sta
 
             $response = wp_remote_post($yrt_api_google_app_url, array(
                 'method'    => 'POST',
-                'body'      => json_encode($data),
+                'body'      => json_encode($data), // Ensure JSON encoding
                 'headers'   => array(
-                    'Content-Type' => 'application/json',
+                    'Content-Type' => 'application/json', // Correct Content-Type
                 ),
             ));
 
