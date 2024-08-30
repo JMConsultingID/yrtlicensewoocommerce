@@ -93,6 +93,8 @@ function yrt_license_manage_license_page() {
                     <th><?php _e('Product Name', 'yrtlicensewoocommerce'); ?></th>
                     <th><?php _e('Account ID', 'yrtlicensewoocommerce'); ?></th>
                     <th><?php _e('License Key', 'yrtlicensewoocommerce'); ?></th>
+                    <th><?php _e('License Expiration', 'yrtlicensewoocommerce'); ?></th>
+                    <th><?php _e('Source', 'yrtlicensewoocommerce'); ?></th>
                     <th><?php _e('License Status', 'yrtlicensewoocommerce'); ?></th>
                     <th><?php _e('Actions', 'yrtlicensewoocommerce'); ?></th>
                 </tr>
@@ -122,6 +124,8 @@ function yrt_license_manage_license_page() {
                                 echo '<td>' . esc_html($license['product_name']) . '</td>';
                                 echo '<td>' . esc_html($license['account_id']) . '</td>';
                                 echo '<td>' . esc_html($license['license_key']) . '</td>';
+                                echo '<td>' . esc_html($license['license_expiration']) . '</td>';
+                                echo '<td>' . esc_html($license['source']) . '</td>';
                                 echo '<td>' . esc_html($license['license_status']) . '</td>';
                                 echo '<td><a href="' . esc_url(admin_url('admin.php?page=yrt-license&edit_id=' . $license['id'])) . '">' . __('Edit', 'yrtlicensewoocommerce') . '</a></td>';
                                 echo '</tr>';
@@ -216,7 +220,13 @@ function display_license_edit_form($edit_id) {
                 </tr>
                 <tr>
                     <th><label for="license_status"><?php _e('License Status', 'yrtlicensewoocommerce'); ?></label></th>
-                    <td><input type="text" name="license_status" id="license_status" value="<?php echo esc_attr($license['license_status']); ?>" class="regular-text" /></td>
+                    <td>
+                        <select name="license_status" id="license_status" class="regular-text">
+                            <option value="active" <?php selected($license['license_status'], 'active'); ?>><?php _e('Active', 'yrtlicensewoocommerce'); ?></option>
+                            <option value="inactive" <?php selected($license['license_status'], 'inactive'); ?>><?php _e('Inactive', 'yrtlicensewoocommerce'); ?></option>
+                            <option value="blocked" <?php selected($license['license_status'], 'blocked'); ?>><?php _e('Blocked', 'yrtlicensewoocommerce'); ?></option>
+                        </select>
+                    </td>
                 </tr>
                 <!-- Add other fields as necessary -->
             </table>
