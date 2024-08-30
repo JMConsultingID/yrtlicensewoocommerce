@@ -40,7 +40,7 @@ function yrt_license_add_admin_menu() {
 }
 add_action('admin_menu', 'yrt_license_add_admin_menu');
 
-// Function to fetch data from REST API and display it in a table
+// Function to fetch data from REST API and display it in a table with pagination and search
 function yrt_license_manage_license_page() {
     // Get the API base endpoint URL, API Version, and Authorization Key from settings
     $api_base_endpoint = get_option('yrt_api_base_endpoint_url');
@@ -50,9 +50,38 @@ function yrt_license_manage_license_page() {
     // Construct the full API endpoint URL based on the base URL and version
     $api_endpoint = trailingslashit($api_base_endpoint) . $api_version . '/yrt-license/';
 
+    // Handle search and pagination parameters
+    $current_page = isset($_GET['paged']) ? max(1, intval($_GET['paged'])) : 1;
+    $search_query = isset($_GET['s']) ? sanitize_text_field($_GET['s']) : '';
+    $items_per_page = 10; // Set the number of items per page
+
+    // Set up headers for the API request
+    $headers = array(
+        'Authorization' => 'Bearer ' . $api_authorization_key,
+        'Content-Type'  => 'application/json'
+    );
+
+    // Set up query parameters for pagination and search
+    $query_args = array(
+        'page' => $current_page,
+        'limit' => $items_per_page,
+        'search' => $search_query,
+    );
+
+    // Build the full API URL with query parameters
+    $api_url = add_query_arg($query_args, $api_endpoint);
+
     ?>
     <div class="wrap">
         <h1><?php _e('Manage License', 'yrtlicensewoocommerce'); ?></h1>
+
+        <!-- Search Form -->
+        <form method="get" action="">
+            <input type="hidden" name="page" value="yrt-license">
+            <input type="text" name="s" value="<?php echo esc_attr($search_query); ?>" placeholder="<?php _e('Search licenses...', 'yrtlicensewoocommerce'); ?>">
+            <input type="submit" class="button" value="<?php _e('Search', 'yrtlicensewoocommerce'); ?>">
+        </form>
+
         <table class="wp-list-table widefat fixed striped">
             <thead>
                 <tr>
@@ -70,21 +99,15 @@ function yrt_license_manage_license_page() {
             </thead>
             <tbody>
                 <?php
-                // Set up headers for the API request
-                $headers = array(
-                    'Authorization' => 'Bearer ' . $api_authorization_key,
-                    'Content-Type'  => 'application/json'
-                );
-
                 // Fetch data from REST API with Authorization header
-                $response = wp_remote_get($api_endpoint, array('headers' => $headers));
+                $response = wp_remote_get($api_url, array('headers' => $headers));
                 
                 if (is_wp_error($response)) {
                     echo '<tr><td colspan="10">' . __('Error fetching licenses', 'yrtlicensewoocommerce') . '</td></tr>';
                 } else {
                     $licenses = json_decode(wp_remote_retrieve_body($response), true);
-                    if (!empty($licenses)) {
-                        foreach ($licenses as $license) {
+                    if (!empty($licenses['data'])) {
+                        foreach ($licenses['data'] as $license) {
                             echo '<tr>';
                             echo '<td>' . esc_html($license['id']) . '</td>';
                             echo '<td>' . esc_html($license['email']) . '</td>';
@@ -105,9 +128,27 @@ function yrt_license_manage_license_page() {
                 ?>
             </tbody>
         </table>
+
+        <!-- Pagination -->
+        <?php
+        $total_items = isset($licenses['total']) ? intval($licenses['total']) : 0;
+        $total_pages = ceil($total_items / $items_per_page);
+        $pagination_args = array(
+            'base' => add_query_arg('paged', '%#%'),
+            'format' => '',
+            'current' => $current_page,
+            'total' => $total_pages,
+            'prev_text' => __('&laquo; Previous', 'yrtlicensewoocommerce'),
+            'next_text' => __('Next &raquo;', 'yrtlicensewoocommerce'),
+        );
+        echo '<div class="tablenav"><div class="tablenav-pages">';
+        echo paginate_links($pagination_args);
+        echo '</div></div>';
+        ?>
     </div>
     <?php
 }
+
 
 // Function to display settings page
 function yrt_license_settings_page() {
