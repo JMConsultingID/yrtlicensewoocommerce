@@ -198,6 +198,9 @@ function display_license_edit_form($edit_id) {
             <input type="hidden" name="action" value="yrt_update_license">
             <input type="hidden" name="license_id" value="<?php echo esc_attr($edit_id); ?>">
 
+            <!-- Add nonce field -->
+            <?php wp_nonce_field('yrt_update_license_nonce', '_wpnonce'); ?>
+
             <table class="form-table">
                 <tr>
                     <th><label for="email"><?php _e('Email', 'yrtlicensewoocommerce'); ?></label></th>
@@ -231,7 +234,9 @@ function yrt_handle_license_update() {
     }
 
     // Validate nonce for security
-    check_admin_referer('yrt_update_license_nonce');
+    if (!check_admin_referer('yrt_update_license_nonce', '_wpnonce')) {
+        wp_die(__('Security check failed. The link you followed has expired.', 'yrtlicensewoocommerce'));
+    }
 
     $license_id = isset($_POST['license_id']) ? intval($_POST['license_id']) : 0;
     $email = isset($_POST['email']) ? sanitize_email($_POST['email']) : '';
