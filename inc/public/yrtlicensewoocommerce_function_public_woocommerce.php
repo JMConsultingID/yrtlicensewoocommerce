@@ -8,6 +8,24 @@
  * @package yrtlicensewoocommerce
  */
 // Add custom fields on the checkout page
+
+add_filter('woocommerce_add_to_cart_redirect', 'license_yrt_add_to_cart_redirect');
+add_filter( 'wc_add_to_cart_message_html', '__return_false' );
+add_filter( 'woocommerce_add_cart_item_data', '_empty_cart' );
+add_filter( 'woocommerce_adjust_non_base_location_prices', '__return_false' );
+
+// Disable order notes field
+add_filter('woocommerce_enable_order_notes_field', '__return_false');
+
+function _empty_cart( $cart_item_data ) {
+    WC()->cart->empty_cart();
+    return $cart_item_data;
+}
+
+function license_yrt_add_to_cart_redirect() {
+    return wc_get_checkout_url();
+}
+
 function license_yrt_account_number_field_after_billing_form($checkout) {
     if (!is_yrt_license_enabled()) {
         return; // Exit if the feature is not enabled
