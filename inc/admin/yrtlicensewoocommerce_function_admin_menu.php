@@ -282,10 +282,22 @@ function yrt_handle_license_update() {
         'headers' => $headers
     ));
 
+    // Check for errors in the response
     if (is_wp_error($response)) {
-        wp_redirect(add_query_arg('updated', 'false', admin_url('admin.php?page=yrt-license&edit_id=' . $license_id)));
+        $error_message = $response->get_error_message();
+        wp_die(__('Failed to update the license: ', 'yrtlicensewoocommerce') . $error_message);
     } else {
-        wp_redirect(add_query_arg('updated', 'true', admin_url('admin.php?page=yrt-license')));
+        $response_body = wp_remote_retrieve_body($response);
+        $response_code = wp_remote_retrieve_response_code($response);
+
+        // Check the response code and body for success or failure
+        if ($response_code == 200) {
+            wp_redirect(add_query_arg('updated', 'true', admin_url('admin.php?page=yrt-license')));
+        } else {
+            $response_data = json_decode($response_body, true);
+            $error_message = isset($response_data['message']) ? $response_data['message'] : __('An unknown error occurred.', 'yrtlicensewoocommerce');
+            wp_die(__('Failed to update the license: ', 'yrtlicensewoocommerce') . esc_html($error_message));
+        }
     }
     exit;
 }
