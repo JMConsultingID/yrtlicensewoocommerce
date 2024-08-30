@@ -216,6 +216,10 @@ function display_license_edit_form($edit_id) {
                     <td><input type="text" name="full_name" id="full_name" value="<?php echo esc_attr($license['full_name']); ?>" class="regular-text" /></td>
                 </tr>
                 <tr>
+                    <th><label for="account_id"><?php _e('Account ID', 'yrtlicensewoocommerce'); ?></label></th>
+                    <td><input type="text" name="account_id" id="account_id" value="<?php echo esc_attr($license['account_id']); ?>" class="regular-text" /></td>
+                </tr>
+                <tr>
                     <th><label for="license_key"><?php _e('License Key', 'yrtlicensewoocommerce'); ?></label></th>
                     <td><input type="text" name="license_key" id="license_key" value="<?php echo esc_attr($license['license_key']); ?>" class="regular-text" /></td>
                 </tr>
@@ -252,6 +256,7 @@ function yrt_handle_license_update() {
     $license_id = isset($_POST['license_id']) ? intval($_POST['license_id']) : 0;
     $email = isset($_POST['email']) ? sanitize_email($_POST['email']) : '';
     $full_name = isset($_POST['full_name']) ? sanitize_text_field($_POST['full_name']) : '';
+    $account_id = isset($_POST['account_id']) ? sanitize_text_field($_POST['account_id']) : '';
     $license_key = isset($_POST['license_key']) ? sanitize_text_field($_POST['license_key']) : '';
     $license_status = isset($_POST['license_status']) ? sanitize_text_field($_POST['license_status']) : '';
 
@@ -271,6 +276,7 @@ function yrt_handle_license_update() {
         'id' => $license_id,
         'email' => $email,
         'full_name' => $full_name,
+        'account_id' => $account_id,
         'license_key' => $license_key,
         'license_status' => $license_status
         // Add other fields as necessary
