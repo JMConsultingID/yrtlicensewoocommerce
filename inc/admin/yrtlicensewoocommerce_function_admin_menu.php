@@ -123,7 +123,7 @@ function yrt_license_register_settings() {
     add_settings_field('yrt_api_base_endpoint_url', __('YRT API Base Endpoint URL', 'yrtlicensewoocommerce'), 'yrt_license_api_base_endpoint_url_callback', 'yrt_license_settings', 'yrt_license_main_section');
     add_settings_field('yrt_api_authorization_key', __('YRT API Authorization Key', 'yrtlicensewoocommerce'), 'yrt_license_api_authorization_key_callback', 'yrt_license_settings', 'yrt_license_main_section');
     add_settings_field('yrt_api_version', __('YRT API Version', 'yrtlicensewoocommerce'), 'yrt_license_api_version_callback', 'yrt_license_settings', 'yrt_license_main_section');
-    add_settings_field('yrt_google_script_web_app_url', __('YRT Google Script Web APP Url', 'yrtlicensewoocommerce'), 'yrt_license_google_script_web_app_url_callback', 'yrt_license_settings', 'yrt_license_main_section');
+    add_settings_field('yrt_google_script_web_app_url', __('YRT Google Script Web APP Url (under development)', 'yrtlicensewoocommerce'), 'yrt_license_google_script_web_app_url_callback', 'yrt_license_settings', 'yrt_license_main_section');
 }
 add_action('admin_init', 'yrt_license_register_settings');
 
@@ -143,9 +143,28 @@ function yrt_license_api_authorization_key_callback() {
     echo '<input type="text" id="yrt_api_authorization_key" name="yrt_api_authorization_key" value="' . $value . '" class="regular-text" />';
 }
 
+// Callback for YRT API Version setting field
 function yrt_license_api_version_callback() {
-    $value = esc_attr(get_option('yrt_api_version'));
-    echo '<input type="text" id="yrt_api_version" name="yrt_api_version" value="' . $value . '" class="regular-text" />';
+    // Get the current option value, defaulting to 'v2'
+    $selected_version = get_option('yrt_api_version', 'v2');
+
+    // Define the select options
+    $options = array(
+        'v1' => __('Version 1', 'yrtlicensewoocommerce'),
+        'v2' => __('Version 2', 'yrtlicensewoocommerce')
+    );
+
+    // Start the select dropdown
+    echo '<select id="yrt_api_version" name="yrt_api_version">';
+
+    // Loop through options and set the selected attribute
+    foreach ($options as $value => $label) {
+        $selected = ($selected_version === $value) ? 'selected="selected"' : '';
+        echo '<option value="' . esc_attr($value) . '" ' . $selected . '>' . esc_html($label) . '</option>';
+    }
+
+    // Close the select dropdown
+    echo '</select>';
 }
 
 function yrt_license_google_script_web_app_url_callback() {
