@@ -292,7 +292,7 @@ function yrt_handle_license_update() {
 
         // Check the response code and body for success or failure
         if ($response_code == 200) {
-            wp_redirect(add_query_arg('updated', 'true', admin_url('admin.php?page=yrt-license')));
+            wp_redirect(add_query_arg(array('page' => 'yrt-license', 'updated' => 'success'), admin_url('admin.php')));
         } else {
             $response_data = json_decode($response_body, true);
             $error_message = isset($response_data['message']) ? $response_data['message'] : __('An unknown error occurred.', 'yrtlicensewoocommerce');
