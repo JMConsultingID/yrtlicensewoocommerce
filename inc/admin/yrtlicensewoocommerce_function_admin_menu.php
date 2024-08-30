@@ -158,6 +158,119 @@ function yrt_license_manage_license_page() {
     <?php
 }
 
+function display_license_edit_form($edit_id) {
+    // Fetch the license details using the edit_id
+    $api_base_endpoint = get_option('yrt_api_base_endpoint_url');
+    $api_version = get_option('yrt_api_version', 'v2');
+    $api_authorization_key = get_option('yrt_api_authorization_key');
+
+    $api_endpoint = trailingslashit($api_base_endpoint) . $api_version . '/yrt-license/' . $edit_id;
+
+    $headers = array(
+        'Authorization' => 'Bearer ' . $api_authorization_key,
+        'Content-Type'  => 'application/json'
+    );
+
+    $response = wp_remote_get($api_endpoint, array('headers' => $headers));
+
+    if (is_wp_error($response)) {
+        echo '<div class="error"><p>' . __('Error fetching license details.', 'yrtlicensewoocommerce') . '</p></div>';
+        return;
+    }
+
+    $license = json_decode(wp_remote_retrieve_body($response), true);
+
+    if (empty($license)) {
+        echo '<div class="error"><p>' . __('No license details found.', 'yrtlicensewoocommerce') . '</p></div>';
+        return;
+    }
+
+    // Display the edit form
+    ?>
+    <div class="wrap">
+        <h2><?php _e('Edit License', 'yrtlicensewoocommerce'); ?></h2>
+        <form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>">
+            <input type="hidden" name="action" value="yrt_update_license">
+            <input type="hidden" name="license_id" value="<?php echo esc_attr($edit_id); ?>">
+
+            <table class="form-table">
+                <tr>
+                    <th><label for="email"><?php _e('Email', 'yrtlicensewoocommerce'); ?></label></th>
+                    <td><input type="email" name="email" id="email" value="<?php echo esc_attr($license['email']); ?>" class="regular-text" /></td>
+                </tr>
+                <tr>
+                    <th><label for="full_name"><?php _e('Full Name', 'yrtlicensewoocommerce'); ?></label></th>
+                    <td><input type="text" name="full_name" id="full_name" value="<?php echo esc_attr($license['full_name']); ?>" class="regular-text" /></td>
+                </tr>
+                <tr>
+                    <th><label for="license_key"><?php _e('License Key', 'yrtlicensewoocommerce'); ?></label></th>
+                    <td><input type="text" name="license_key" id="license_key" value="<?php echo esc_attr($license['license_key']); ?>" class="regular-text" /></td>
+                </tr>
+                <tr>
+                    <th><label for="license_status"><?php _e('License Status', 'yrtlicensewoocommerce'); ?></label></th>
+                    <td><input type="text" name="license_status" id="license_status" value="<?php echo esc_attr($license['license_status']); ?>" class="regular-text" /></td>
+                </tr>
+                <!-- Add other fields as necessary -->
+            </table>
+            <p class="submit">
+                <input type="submit" name="submit" id="submit" class="button button-primary" value="<?php _e('Update License', 'yrtlicensewoocommerce'); ?>">
+            </p>
+        </form>
+    </div>
+    <?php
+}
+
+function yrt_handle_license_update() {
+    if (!current_user_can('manage_options')) {
+        wp_die(__('You do not have sufficient permissions to access this page.'));
+    }
+
+    // Validate nonce for security
+    check_admin_referer('yrt_update_license_nonce');
+
+    $license_id = isset($_POST['license_id']) ? intval($_POST['license_id']) : 0;
+    $email = isset($_POST['email']) ? sanitize_email($_POST['email']) : '';
+    $full_name = isset($_POST['full_name']) ? sanitize_text_field($_POST['full_name']) : '';
+    $license_key = isset($_POST['license_key']) ? sanitize_text_field($_POST['license_key']) : '';
+    $license_status = isset($_POST['license_status']) ? sanitize_text_field($_POST['license_status']) : '';
+
+    // Update data via the REST API
+    $api_base_endpoint = get_option('yrt_api_base_endpoint_url');
+    $api_version = get_option('yrt_api_version', 'v2');
+    $api_authorization_key = get_option('yrt_api_authorization_key');
+
+    $api_endpoint = trailingslashit($api_base_endpoint) . $api_version . '/yrt-license/edit';
+
+    $headers = array(
+        'Authorization' => 'Bearer ' . $api_authorization_key,
+        'Content-Type'  => 'application/json'
+    );
+
+    $body = json_encode(array(
+        'id' => $license_id,
+        'email' => $email,
+        'full_name' => $full_name,
+        'license_key' => $license_key,
+        'license_status' => $license_status
+        // Add other fields as necessary
+    ));
+
+    $response = wp_remote_post($api_endpoint, array(
+        'method' => 'PUT',
+        'body' => $body,
+        'headers' => $headers
+    ));
+
+    if (is_wp_error($response)) {
+        wp_redirect(add_query_arg('updated', 'false', admin_url('admin.php?page=yrt-license&edit_id=' . $license_id)));
+    } else {
+        wp_redirect(add_query_arg('updated', 'true', admin_url('admin.php?page=yrt-license')));
+    }
+    exit;
+}
+add_action('admin_post_yrt_update_license', 'yrt_handle_license_update');
+
+
 // Function to display settings page
 function yrt_license_settings_page() {
     ?>
