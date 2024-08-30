@@ -9,7 +9,7 @@
  */
 
 // Include admin functions
-require dirname(__FILE__) . '/admin/yrtlicensewoocommerce_function_admin_woocommerce.php';
+require dirname(__FILE__) . '/admin/yrtlicensewoocommerce_function_admin_menu.php';
 
 // Include helper functions
 require dirname(__FILE__) . '/helper/yrtlicensewoocommerce_function_helper.php';

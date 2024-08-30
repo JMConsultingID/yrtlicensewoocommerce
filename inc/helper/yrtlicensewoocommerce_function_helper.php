@@ -11,7 +11,7 @@
 // Function to check if YRT EA License feature is enabled
 function is_yrt_license_enabled() {
     $enable_yrt_license = get_option('enable_yrt_license');
-    return ($enable_yrt_license === 'yes');
+    return !empty($enable_yrt_license);
 }
 
 
