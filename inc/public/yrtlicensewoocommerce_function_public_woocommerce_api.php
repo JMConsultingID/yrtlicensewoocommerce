@@ -69,7 +69,7 @@ function license_yrt_send_api_on_order_status_change($order_id, $old_status, $ne
                 'account_id' => $account_id,
                 'license_key' => $license_key,
                 'license_expiration' => $license_expiration,
-                'source' => $source
+                'source' => json_encode($source)
             );
 
             $response = wp_remote_post($api_endpoint, array(
