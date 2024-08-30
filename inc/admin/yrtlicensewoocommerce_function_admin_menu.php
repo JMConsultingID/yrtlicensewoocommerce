@@ -86,7 +86,6 @@ function yrt_license_manage_license_page() {
         <table class="wp-list-table widefat fixed striped">
             <thead>
                 <tr>
-                    <th><?php _e('ID', 'yrtlicensewoocommerce'); ?></th>
                     <th><?php _e('Email', 'yrtlicensewoocommerce'); ?></th>
                     <th><?php _e('Full Name', 'yrtlicensewoocommerce'); ?></th>
                     <th><?php _e('Order ID', 'yrtlicensewoocommerce'); ?></th>
@@ -118,7 +117,6 @@ function yrt_license_manage_license_page() {
                         if (!empty($licenses)) {
                             foreach ($licenses as $license) {
                                 echo '<tr>';
-                                echo '<td>' . esc_html($license['id']) . '</td>';
                                 echo '<td>' . esc_html($license['email']) . '</td>';
                                 echo '<td>' . esc_html($license['full_name']) . '</td>';
                                 echo '<td>' . esc_html($license['order_id']) . '</td>';
