@@ -66,6 +66,8 @@ function yrt_license_manage_license_page() {
         'page' => $current_page,
         'limit' => $items_per_page,
         'search' => $search_query,
+        'order_by' => 'id', // Order by 'id' or 'account_creation_date'
+        'order'    => 'desc' // Descending order
     );
 
     // Build the full API URL with query parameters
