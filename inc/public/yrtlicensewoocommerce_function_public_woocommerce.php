@@ -53,3 +53,21 @@ function license_yrt_display_admin_order_meta($order) {
     echo '<p><strong>' . __('License Key') . ':</strong> ' . get_post_meta($order->get_id(), '_yrt_license_license_key', true) . '</p>';
 }
 add_action('woocommerce_admin_order_data_after_billing_address', 'license_yrt_display_admin_order_meta', 10, 1);
+
+
+// Display Account ID and License Key on the order received (thank you) page
+function license_yrt_display_license_info_on_thank_you_page($order_id) {
+    if (!is_yrt_license_enabled()) {
+        return; // Exit if the feature is not enabled
+    }
+    
+    $account_id = get_post_meta($order_id, '_yrt_license_account_number', true);
+    $license_key = get_post_meta($order_id, '_yrt_license_license_key', true);
+
+    if ($account_id && $license_key) {
+        echo '<h2>' . __('Your License Details') . '</h2>';
+        echo '<p><strong>' . __('Account ID') . ':</strong> ' . esc_html($account_id) . '</p>';
+        echo '<p><strong>' . __('License Key') . ':</strong> ' . esc_html($license_key) . '</p>';
+    }
+}
+add_action('woocommerce_thankyou', 'license_yrt_display_license_info_on_thank_you_page');
