@@ -303,6 +303,17 @@ function yrt_handle_license_update() {
 }
 add_action('admin_post_yrt_update_license', 'yrt_handle_license_update');
 
+// Function to display admin notice after a successful update
+function yrt_license_admin_notice() {
+    if (isset($_GET['updated']) && $_GET['updated'] === 'success') {
+        echo '<div class="notice notice-success is-dismissible">';
+        echo '<p>' . __('License updated successfully.', 'yrtlicensewoocommerce') . '</p>';
+        echo '</div>';
+    }
+}
+add_action('admin_notices', 'yrt_license_admin_notice');
+
+
 
 // Function to display settings page
 function yrt_license_settings_page() {
