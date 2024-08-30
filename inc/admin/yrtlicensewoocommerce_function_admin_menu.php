@@ -168,6 +168,6 @@ function yrt_license_api_version_callback() {
 }
 
 function yrt_license_google_script_web_app_url_callback() {
-    $value = esc_attr(get_option('yrt_google_script_web_app_url'));
-    echo '<input type="text" id="yrt_google_script_web_app_url" name="yrt_google_script_web_app_url" value="' . $value . '" class="regular-text" />';
+    $value = esc_attr(get_option('yrt_api_google_app_url'));
+    echo '<input type="text" id="yrt_api_google_app_url" name="yrt_api_google_app_url" value="' . $value . '" class="regular-text" />';
 }
