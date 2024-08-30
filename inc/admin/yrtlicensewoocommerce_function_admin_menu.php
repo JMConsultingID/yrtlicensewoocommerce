@@ -117,6 +117,11 @@ function yrt_license_manage_license_page() {
                     if (isset($data['data']) && is_array($data['data'])) {
                         $licenses = $data['data'];
                         if (!empty($licenses)) {
+                            // Extract source information from the license data
+                            $source = isset($license['source']) ? json_decode($license['source'], true) : array();
+                            $source_ip_user = isset($source['ip_user']) ? $source['ip_user'] : __('N/A', 'yrtlicensewoocommerce');
+                            $source_browser = isset($source['browser']) ? $source['browser'] : __('N/A', 'yrtlicensewoocommerce');
+                            $source_domain = isset($source['domain']) ? $source['domain'] : __('N/A', 'yrtlicensewoocommerce');
                             foreach ($licenses as $license) {
                                 echo '<tr>';
                                 echo '<td>' . esc_html($license['email']) . '</td>';
@@ -127,7 +132,7 @@ function yrt_license_manage_license_page() {
                                 echo '<td>' . esc_html($license['account_id']) . '</td>';
                                 echo '<td>' . esc_html($license['license_key']) . '</td>';
                                 echo '<td>' . esc_html($license['license_expiration']) . '</td>';
-                                echo '<td>' . esc_html($license['source']) . '</td>';
+                                echo '<td>' . esc_html($domain) . '</td>';
                                 echo '<td>' . esc_html($license['account_creation_date']) . '</td>';
                                 echo '<td>' . esc_html($license['license_status']) . '</td>';
                                 echo '<td><a href="' . esc_url(admin_url('admin.php?page=yrt-license&edit_id=' . $license['id'])) . '">' . __('Edit', 'yrtlicensewoocommerce') . '</a></td>';
