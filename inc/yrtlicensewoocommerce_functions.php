@@ -18,4 +18,4 @@ require dirname(__FILE__) . '/helper/yrtlicensewoocommerce_function_helper.php';
 require dirname(__FILE__) . '/public/yrtlicensewoocommerce_function_public_woocommerce.php';
 require dirname(__FILE__) . '/public/yrtlicensewoocommerce_function_public_woocommerce_email.php';
 require dirname(__FILE__) . '/public/yrtlicensewoocommerce_function_public_woocommerce_api.php';
-require dirname(__FILE__) . '/public/yrtlicensewoocommerce_function_public_woocommerce_google_sheet.php';
+//require dirname(__FILE__) . '/public/yrtlicensewoocommerce_function_public_woocommerce_google_sheet.php';
