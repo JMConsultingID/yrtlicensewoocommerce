@@ -97,18 +97,17 @@ function yrt_license_manage_license_page() {
                     <th><?php _e('Actions', 'yrtlicensewoocommerce'); ?></th>
                 </tr>
             </thead>
-            <tbody>
+           <tbody>
                 <?php
                 // Fetch data from REST API with Authorization header
                 $response = wp_remote_get($api_url, array('headers' => $headers));
-                
+
                 if (is_wp_error($response)) {
                     echo '<tr><td colspan="10">' . __('Error fetching licenses', 'yrtlicensewoocommerce') . '</td></tr>';
                 } else {
                     $response_body = wp_remote_retrieve_body($response);
                     $data = json_decode($response_body, true);
 
-                    // Ensure that 'data' exists in the response and is an array
                     if (isset($data['data']) && is_array($data['data'])) {
                         $licenses = $data['data'];
                         if (!empty($licenses)) {
@@ -124,7 +123,6 @@ function yrt_license_manage_license_page() {
                                 echo '<td>' . esc_html($license['license_key']) . '</td>';
                                 echo '<td>' . esc_html($license['license_status']) . '</td>';
                                 echo '<td><a href="' . esc_url(admin_url('admin.php?page=yrt-license&edit_id=' . $license['id'])) . '">' . __('Edit', 'yrtlicensewoocommerce') . '</a></td>';
-                                echo '</tr>';
                                 echo '</tr>';
                             }
                         } else {
