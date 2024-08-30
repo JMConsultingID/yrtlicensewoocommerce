@@ -218,6 +218,12 @@ function display_license_edit_form($edit_id) {
         </form>
     </div>
     <?php
+
+    // If an edit ID is set, display the edit form
+    if (isset($_GET['edit_id'])) {
+        $edit_id = intval($_GET['edit_id']);
+        display_license_edit_form($edit_id);
+    }
 }
 
 function yrt_handle_license_update() {
