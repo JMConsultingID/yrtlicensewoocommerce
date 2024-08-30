@@ -13,9 +13,13 @@ add_filter('woocommerce_add_to_cart_redirect', 'license_yrt_add_to_cart_redirect
 add_filter( 'wc_add_to_cart_message_html', '__return_false' );
 add_filter( 'woocommerce_add_cart_item_data', '_empty_cart' );
 add_filter( 'woocommerce_adjust_non_base_location_prices', '__return_false' );
-
-// Disable order notes field
 add_filter('woocommerce_enable_order_notes_field', '__return_false');
+add_filter( 'woocommerce_checkout_fields' , 'license_yrt_modify_woocommerce_billing_fields' );
+
+function license_yrt_modify_woocommerce_billing_fields( $fields ) {
+    $fields['billing']['billing_email']['priority'] = 5;
+    return $fields;
+}
 
 function _empty_cart( $cart_item_data ) {
     WC()->cart->empty_cart();
