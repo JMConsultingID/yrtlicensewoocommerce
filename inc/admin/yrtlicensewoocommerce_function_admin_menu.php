@@ -91,7 +91,6 @@ function yrt_license_manage_license_page() {
                     <th><?php _e('Email', 'yrtlicensewoocommerce'); ?></th>
                     <th><?php _e('Full Name', 'yrtlicensewoocommerce'); ?></th>
                     <th><?php _e('Order ID', 'yrtlicensewoocommerce'); ?></th>
-                    <th><?php _e('Product ID', 'yrtlicensewoocommerce'); ?></th>
                     <th><?php _e('Product Name', 'yrtlicensewoocommerce'); ?></th>
                     <th><?php _e('Account ID', 'yrtlicensewoocommerce'); ?></th>
                     <th><?php _e('License Key', 'yrtlicensewoocommerce'); ?></th>
@@ -127,8 +126,7 @@ function yrt_license_manage_license_page() {
                                 echo '<td>' . esc_html($license['email']) . '</td>';
                                 echo '<td>' . esc_html($license['full_name']) . '</td>';
                                 echo '<td><a href="/wp-admin/post.php?post=' . esc_attr($license['order_id']) . '&action=edit">' . esc_html($license['order_id']) . '</a></td>';
-                                echo '<td>' . esc_html($license['product_id']) . '</td>';
-                                echo '<td>' . esc_html($license['product_name']) . '</td>';
+                                echo '<td><a href="/wp-admin/post.php?post=' . esc_attr($license['product_id']) . '&action=edit">' . esc_html($license['product_name']) . '</a></td>';
                                 echo '<td>' . esc_html($license['account_id']) . '</td>';
                                 echo '<td>' . esc_html($license['license_key']) . '</td>';
                                 echo '<td>' . esc_html($license['license_expiration']) . '</td>';
