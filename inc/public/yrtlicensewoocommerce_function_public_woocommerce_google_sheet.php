@@ -14,6 +14,9 @@ function license_yrt_send_data_to_google_sheets($order_id, $old_status, $new_sta
         return; // Exit if the feature is not enabled
     }
 
+    // Get the Google Script Web APP Url
+    $yrt_api_google_app_url = get_option('yrt_api_google_app_url');
+
     if ($new_status == 'completed') {
         $full_name = $order->get_formatted_billing_full_name();
         $email_billing = $order->get_billing_email();
