@@ -185,7 +185,7 @@ function display_license_edit_form($edit_id) {
         return;
     }
 
-    // Display the edit form
+    // Display the edit forms
     ?>
     <div class="wrap">
         <h2><?php _e('Edit License', 'yrtlicensewoocommerce'); ?></h2>
