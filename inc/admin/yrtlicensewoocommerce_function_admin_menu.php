@@ -97,6 +97,7 @@ function yrt_license_manage_license_page() {
                     <th><?php _e('License Expiration', 'yrtlicensewoocommerce'); ?></th>
                     <th><?php _e('Source', 'yrtlicensewoocommerce'); ?></th>
                     <th><?php _e('License Status', 'yrtlicensewoocommerce'); ?></th>
+                    <th><?php _e('Creation Date', 'yrtlicensewoocommerce'); ?></th>
                     <th><?php _e('Actions', 'yrtlicensewoocommerce'); ?></th>
                 </tr>
             </thead>
@@ -127,6 +128,7 @@ function yrt_license_manage_license_page() {
                                 echo '<td>' . esc_html($license['license_key']) . '</td>';
                                 echo '<td>' . esc_html($license['license_expiration']) . '</td>';
                                 echo '<td>' . esc_html($license['source']) . '</td>';
+                                echo '<td>' . esc_html($license['account_creation_date']) . '</td>';
                                 echo '<td>' . esc_html($license['license_status']) . '</td>';
                                 echo '<td><a href="' . esc_url(admin_url('admin.php?page=yrt-license&edit_id=' . $license['id'])) . '">' . __('Edit', 'yrtlicensewoocommerce') . '</a></td>';
                                 echo '</tr>';
