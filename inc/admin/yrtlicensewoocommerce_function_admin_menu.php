@@ -105,21 +105,29 @@ function yrt_license_manage_license_page() {
                 if (is_wp_error($response)) {
                     echo '<tr><td colspan="10">' . __('Error fetching licenses', 'yrtlicensewoocommerce') . '</td></tr>';
                 } else {
-                    $licenses = json_decode(wp_remote_retrieve_body($response), true);
-                    if (!empty($licenses['data'])) {
-                        foreach ($licenses['data'] as $license) {
-                            echo '<tr>';
-                            echo '<td>' . esc_html($license['id']) . '</td>';
-                            echo '<td>' . esc_html($license['email']) . '</td>';
-                            echo '<td>' . esc_html($license['full_name']) . '</td>';
-                            echo '<td>' . esc_html($license['order_id']) . '</td>';
-                            echo '<td>' . esc_html($license['product_id']) . '</td>';
-                            echo '<td>' . esc_html($license['product_name']) . '</td>';
-                            echo '<td>' . esc_html($license['account_id']) . '</td>';
-                            echo '<td>' . esc_html($license['license_key']) . '</td>';
-                            echo '<td>' . esc_html($license['license_status']) . '</td>';
-                            echo '<td><a href="#">' . __('Edit', 'yrtlicensewoocommerce') . '</a></td>';
-                            echo '</tr>';
+                    $response_body = wp_remote_retrieve_body($response);
+                    $data = json_decode($response_body, true);
+
+                    // Ensure that 'data' exists in the response and is an array
+                    if (isset($data['data']) && is_array($data['data'])) {
+                        $licenses = $data['data'];
+                        if (!empty($licenses)) {
+                            foreach ($licenses as $license) {
+                                echo '<tr>';
+                                echo '<td>' . esc_html($license['id']) . '</td>';
+                                echo '<td>' . esc_html($license['email']) . '</td>';
+                                echo '<td>' . esc_html($license['full_name']) . '</td>';
+                                echo '<td>' . esc_html($license['order_id']) . '</td>';
+                                echo '<td>' . esc_html($license['product_id']) . '</td>';
+                                echo '<td>' . esc_html($license['product_name']) . '</td>';
+                                echo '<td>' . esc_html($license['account_id']) . '</td>';
+                                echo '<td>' . esc_html($license['license_key']) . '</td>';
+                                echo '<td>' . esc_html($license['license_status']) . '</td>';
+                                echo '<td><a href="#">' . __('Edit', 'yrtlicensewoocommerce') . '</a></td>';
+                                echo '</tr>';
+                            }
+                        } else {
+                            echo '<tr><td colspan="10">' . __('No licenses found', 'yrtlicensewoocommerce') . '</td></tr>';
                         }
                     } else {
                         echo '<tr><td colspan="10">' . __('No licenses found', 'yrtlicensewoocommerce') . '</td></tr>';
@@ -131,7 +139,7 @@ function yrt_license_manage_license_page() {
 
         <!-- Pagination -->
         <?php
-        $total_items = isset($licenses['total']) ? intval($licenses['total']) : 0;
+        $total_items = isset($data['total']) ? intval($data['total']) : 0;
         $total_pages = ceil($total_items / $items_per_page);
         $pagination_args = array(
             'base' => add_query_arg('paged', '%#%'),
@@ -148,7 +156,6 @@ function yrt_license_manage_license_page() {
     </div>
     <?php
 }
-
 
 // Function to display settings page
 function yrt_license_settings_page() {
