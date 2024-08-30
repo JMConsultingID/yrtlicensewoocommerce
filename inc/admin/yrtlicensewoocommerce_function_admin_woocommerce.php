@@ -78,12 +78,12 @@ function yrt_license_save_woocommerce_settings() {
             'id'       => 'yrt_api_authorization_key',
             'type'     => 'text',
             'default'  => '',
-        )
+        ),
         array(
             'id'       => 'yrt_api_google_app_url',
             'type'     => 'text',
             'default'  => '',
-        ),
+        )
     ));
 }
 add_action('woocommerce_update_options_general', 'yrt_license_save_woocommerce_settings');
