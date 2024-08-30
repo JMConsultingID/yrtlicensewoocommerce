@@ -17,7 +17,15 @@ function license_yrt_send_data_to_google_sheets($order_id, $old_status, $new_sta
     if ($new_status == 'completed') {
         $full_name = $order->get_formatted_billing_full_name();
         $email_billing = $order->get_billing_email();
-        $product_id = $order->get_items()[0]->get_product_id(); // Assuming single product order
+        
+        // Check if the order has items before attempting to access them
+        $items = $order->get_items();
+        if (!empty($items)) {
+            $product_id = reset($items)->get_product_id(); // Safely get the first product ID
+        } else {
+            $product_id = ''; // Or handle accordingly if no items
+        }
+
         $account_number = get_post_meta($order_id, '_yrt_license_account_number', true);
         $license_key = get_post_meta($order_id, '_yrt_license_license_key', true);
 
@@ -36,7 +44,7 @@ function license_yrt_send_data_to_google_sheets($order_id, $old_status, $new_sta
                 'license_key'     => $license_key
             );
 
-            $response = wp_remote_post('https://script.google.com/macros/s/AKfycbyoDAN2ClkKlu36xb1KwEsoyfhoP0i3WBzRX2gU3RAksU6sASDF1nEQMzCbZgnA1RryQw/exec', array(
+            $response = wp_remote_post('YOUR_GOOGLE_SCRIPT_WEB_APP_URL', array(
                 'method'    => 'POST',
                 'body'      => json_encode($data),
                 'headers'   => array(
@@ -45,16 +53,13 @@ function license_yrt_send_data_to_google_sheets($order_id, $old_status, $new_sta
             ));
 
             if (is_wp_error($response)) {
-                // Log error
                 $error_message = $response->get_error_message();
                 $logger->error('Google Sheets API error: ' . $error_message, $context);
             } else {
-                // Log success response
                 $response_body = wp_remote_retrieve_body($response);
                 $logger->info('Google Sheets API response: ' . $response_body, $context);
             }
         } else {
-            // Log missing account_number or license_key
             $logger->warning('Google Sheets API: Missing account_number or license_key', $context);
         }
     }
