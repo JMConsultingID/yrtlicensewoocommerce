@@ -14,7 +14,7 @@ function license_yrt_add_license_info_to_email($order, $sent_to_admin, $plain_te
         $order_id = $order->get_id();
         $account_id = get_post_meta($order_id, '_yrt_license_account_number', true);
         $license_key = get_post_meta($order_id, '_yrt_license_license_key', true);
-        $download_url = 'https://eastaging.yourrobotrader.com/wp-content/uploads/woocommerce_uploads/2024/08/sample_file_products_EA_YRT-wi2p1r.txt';
+        $download_url = 'https://eastaging.yourrobotrader.com/wp-content/uploads/2024/08/Software_Box_Mockup_robotrader-shadow-web-e1662613546511.png';
 
         if ($account_id && $license_key) {
             if ($plain_text) {
@@ -42,7 +42,7 @@ function license_yrt_add_license_info_to_admin_email($order, $sent_to_admin, $pl
         $order_id = $order->get_id();
         $account_id = get_post_meta($order_id, '_yrt_license_account_number', true);
         $license_key = get_post_meta($order_id, '_yrt_license_license_key', true);
-        $download_url = 'https://eastaging.yourrobotrader.com/wp-content/uploads/woocommerce_uploads/2024/08/sample_file_products_EA_YRT-wi2p1r.txt';
+        $download_url = 'https://eastaging.yourrobotrader.com/wp-content/uploads/2024/08/Software_Box_Mockup_robotrader-shadow-web-e1662613546511.png';
 
         if ($account_id && $license_key) {
             if ($plain_text) {
