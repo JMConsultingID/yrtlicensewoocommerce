@@ -42,6 +42,14 @@ add_action('admin_menu', 'yrt_license_add_admin_menu');
 
 // Function to fetch data from REST API and display it in a table
 function yrt_license_manage_license_page() {
+    // Get the API base endpoint URL, API Version, and Authorization Key from settings
+    $api_base_endpoint = get_option('yrt_api_base_endpoint_url');
+    $api_version = get_option('yrt_api_version', 'v2'); // Default to 'v2' if not set
+    $api_authorization_key = get_option('yrt_api_authorization_key');
+
+    // Construct the full API endpoint URL based on the base URL and version
+    $api_endpoint = trailingslashit($api_base_endpoint) . $api_version . '/yrt-license/';
+
     ?>
     <div class="wrap">
         <h1><?php _e('Manage License', 'yrtlicensewoocommerce'); ?></h1>
@@ -62,7 +70,15 @@ function yrt_license_manage_license_page() {
             </thead>
             <tbody>
                 <?php
-                $response = wp_remote_get('https://license.yourrobotrader.com/api/v2/yrt-license/');
+                // Set up headers for the API request
+                $headers = array(
+                    'Authorization' => 'Bearer ' . $api_authorization_key,
+                    'Content-Type'  => 'application/json'
+                );
+
+                // Fetch data from REST API with Authorization header
+                $response = wp_remote_get($api_endpoint, array('headers' => $headers));
+                
                 if (is_wp_error($response)) {
                     echo '<tr><td colspan="10">' . __('Error fetching licenses', 'yrtlicensewoocommerce') . '</td></tr>';
                 } else {

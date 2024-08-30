@@ -15,9 +15,13 @@ function license_yrt_send_api_on_order_status_change($order_id, $old_status, $ne
         return; // Exit if the feature is not enabled
     }
 
-    // Get the API base endpoint URL and Authorization Key from settings
+    // Get the API base endpoint URL, Authorization Key, and API Version from settings
     $api_base_endpoint = get_option('yrt_api_base_endpoint_url');
     $api_authorization_key = get_option('yrt_api_authorization_key');
+    $api_version = get_option('yrt_api_version', 'v2'); // Default to 'v2' if not set
+
+    // Construct the full API endpoint URL based on the base URL and version
+    $api_endpoint = trailingslashit($api_base_endpoint) . $api_version . '/yrt-license/';
 
     if ($new_status == 'completed' && !empty($api_base_endpoint) && !empty($api_authorization_key)) {
         $account_id = get_post_meta($order_id, '_yrt_license_account_number', true);
@@ -57,7 +61,7 @@ function license_yrt_send_api_on_order_status_change($order_id, $old_status, $ne
                 'source' => $source
             );
 
-            $response = wp_remote_post($api_base_endpoint, array(
+            $response = wp_remote_post($api_endpoint, array(
                 'method'    => 'POST',
                 'body'      => json_encode($data),
                 'headers'   => array(
