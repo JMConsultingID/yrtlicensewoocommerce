@@ -22,6 +22,22 @@ function license_yrt_send_api_on_order_status_change($order_id, $old_status, $ne
     if ($new_status == 'completed' && !empty($api_base_endpoint) && !empty($api_authorization_key)) {
         $account_id = get_post_meta($order_id, '_yrt_license_account_number', true);
         $license_key = get_post_meta($order_id, '_yrt_license_license_key', true);
+        $email = $order->get_billing_email();
+        $full_name = $order->get_formatted_billing_full_name();
+        $order_id = $order->get_id();
+        $product_id = '';
+        $product_name = '';
+
+        // Fetch product details (assuming a single product order)
+        foreach ($order->get_items() as $item_id => $item) {
+            $product_id = $item->get_product_id();
+            $product_name = $item->get_name();
+            break; // Stop after the first item (assuming single product order)
+        }
+
+        // Set license expiration and source
+        $license_expiration = 'Lifetime';
+        $source = 'woocommerce yourrobotrader.com';
 
         // Initialize logger
         $logger_info = license_yrt_connection_response_logger();
@@ -30,8 +46,15 @@ function license_yrt_send_api_on_order_status_change($order_id, $old_status, $ne
 
         if ($account_id && $license_key) {
             $data = array(
+                'email' => $email,
+                'full_name' => $full_name,
+                'order_id' => $order_id,
+                'product_id' => $product_id,
+                'product_name' => $product_name,
+                'account_id' => $account_id,
                 'license_key' => $license_key,
-                'account_id'  => $account_id
+                'license_expiration' => $license_expiration,
+                'source' => $source
             );
 
             $response = wp_remote_post($api_base_endpoint, array(
