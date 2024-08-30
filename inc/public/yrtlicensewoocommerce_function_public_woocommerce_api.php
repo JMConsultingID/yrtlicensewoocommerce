@@ -42,18 +42,17 @@ function license_yrt_send_api_on_order_status_change($order_id, $old_status, $ne
         // Set license expiration and source
         $license_expiration = 'Lifetime';
 
-        // Gather additional data for API
-        $ip_user = $_SERVER['REMOTE_ADDR']; // User's IP address
-        $browser = $_SERVER['HTTP_USER_AGENT']; // User's browser information
-        $domain_source = $_SERVER['SERVER_NAME']; // Domain source (your site domain)
+        // Collect additional information
+        $ip_user = $_SERVER['REMOTE_ADDR'];
+        $browser = $_SERVER['HTTP_USER_AGENT'];
+        $domain = $_SERVER['HTTP_HOST'];
 
-        // Construct source array
-        $source_array = array(
+        // Create an array with the additional source information
+        $source = array(
             'ip_user' => $ip_user,
             'browser' => $browser,
-            'domain' => $domain_source
+            'domain' => $domain
         );
-        $source = $source_array;
 
         // Initialize logger
         $logger_info = license_yrt_connection_response_logger();
