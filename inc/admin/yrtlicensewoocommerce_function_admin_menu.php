@@ -96,8 +96,8 @@ function yrt_license_manage_license_page() {
                     <th><?php _e('License Key', 'yrtlicensewoocommerce'); ?></th>
                     <th><?php _e('License Expiration', 'yrtlicensewoocommerce'); ?></th>
                     <th><?php _e('Source', 'yrtlicensewoocommerce'); ?></th>
-                    <th><?php _e('License Status', 'yrtlicensewoocommerce'); ?></th>
                     <th><?php _e('Creation Date', 'yrtlicensewoocommerce'); ?></th>
+                    <th><?php _e('License Status', 'yrtlicensewoocommerce'); ?></th>                    
                     <th><?php _e('Actions', 'yrtlicensewoocommerce'); ?></th>
                 </tr>
             </thead>
