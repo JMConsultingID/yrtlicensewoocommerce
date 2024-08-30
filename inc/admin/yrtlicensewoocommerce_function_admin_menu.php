@@ -123,7 +123,8 @@ function yrt_license_manage_license_page() {
                                 echo '<td>' . esc_html($license['account_id']) . '</td>';
                                 echo '<td>' . esc_html($license['license_key']) . '</td>';
                                 echo '<td>' . esc_html($license['license_status']) . '</td>';
-                                echo '<td><a href="#">' . __('Edit', 'yrtlicensewoocommerce') . '</a></td>';
+                                echo '<td><a href="' . esc_url(admin_url('admin.php?page=yrt-license&edit_id=' . $license['id'])) . '">' . __('Edit', 'yrtlicensewoocommerce') . '</a></td>';
+                                echo '</tr>';
                                 echo '</tr>';
                             }
                         } else {
