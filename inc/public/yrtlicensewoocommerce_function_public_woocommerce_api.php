@@ -41,7 +41,14 @@ function license_yrt_send_api_on_order_status_change($order_id, $old_status, $ne
 
         // Set license expiration and source
         $license_expiration = 'Lifetime';
-        $source = 'woocommerce yourrobotrader.com';
+
+        // Construct source array
+        $source_array = array(
+            'ip_user' => $ip_user,
+            'browser' => $browser,
+            'domain' => $domain_source
+        );
+        $source = $source_array;
 
         // Initialize logger
         $logger_info = license_yrt_connection_response_logger();
