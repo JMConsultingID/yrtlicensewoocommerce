@@ -126,7 +126,7 @@ function yrt_license_manage_license_page() {
                                 echo '<tr>';
                                 echo '<td>' . esc_html($license['email']) . '</td>';
                                 echo '<td>' . esc_html($license['full_name']) . '</td>';
-                                echo '<td>' . esc_html($license['order_id']) . '</td>';
+                                echo '<td><a href="/admin.php?page=wc-orders&action=edit&id="'.esc_html($license['order_id']).'">' . esc_html($license['order_id']) . '</a></td>';
                                 echo '<td>' . esc_html($license['product_id']) . '</td>';
                                 echo '<td>' . esc_html($license['product_name']) . '</td>';
                                 echo '<td>' . esc_html($license['account_id']) . '</td>';
